@@ -4,16 +4,25 @@ Lumina is a **green cashback and loyalty program built on the Stellar network**,
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
+
+- [Team](#-team) 
 - [Problem](#-problem)  
 - [Solution](#-solution)  
 - [Why Stellar?](#-why-stellar)  
 - [How It Works](#-how-it-works)  
 - [Impact](#-impact)  
 - [Value Proposition](#-value-proposition)  
-- [Getting Started](#-getting-started)  
-- [Next Steps](#-next-steps)  
-- [Team](#-team)  
+- [Getting Started](#-getting-started)   
+
+---
+## Team
+
+- [Giovanna Neves](https://www.linkedin.com/in/giovanna-neves-rodrigues/) – Frontend / UX
+- [Isabel Montenegro](https://www.linkedin.com/in/isabel-montenegro-133b5a345/) – Pitch & Communications Lead
+- [Leunam Sousa](https://www.linkedin.com/in/leunam/) – Smart Contracts  
+- [Lívia Cavalcanti](https://www.linkedin.com/in/liviacavalcantioliveira/) – Business & Strategy Lead
+- [Mirela Bianchi](https://www.linkedin.com/in/mirela-bianchi-608601254/) – Project Lead   
 
 ---
 
