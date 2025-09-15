@@ -83,13 +83,16 @@ By removing intermediaries, Lumina ensures direct distribution of rewards and lo
 
 ## Value Proposition  
 
-Lumina delivers value by combining financial rewards, simplicity, and sustainability in a single experience:  
+Lumina delivers value by combining **financial rewards, simplicity, and sustainability** in a single experience:  
 
 - **For Consumers:** a seamless way to access blockchain-powered cashback without technical complexity, while also contributing to environmental action.  
 <br>
 
 - **For Businesses:** a low-cost, transparent loyalty program that strengthens customer retention and builds a green brand identity.  
   - ***Increased transaction volume:*** every purchase processed through Lumina generates blockchain transactions on Stellar, providing companies with detailed, tamper-proof records of engagement and spending patterns. This data can be used to **optimize marketing strategies, measure customer loyalty, and identify high-value customers**, while also lowering transaction costs compared to traditional intermediaries.  
+  <br>
+
+  - ***Developer revenue model:*** as part of the platform, **5% of the values deposited by businesses** into Lumina, as well as **5% of expired reward points**, will be allocated to the developers. This ensures sustainable funding for maintenance, improvements, and continued growth of the platform.  
 <br>
 
 - **For the Stellar Ecosystem:** an approachable use case that drives mainstream adoption of Stellar, showing that blockchain can be easy, practical, and impactful.  
@@ -99,8 +102,7 @@ Lumina delivers value by combining financial rewards, simplicity, and sustainabi
 - **For Society:** a direct connection between everyday purchases and carbon offsetting, turning transactions into a tool for positive change.  
 <br>
 
-In essence, Lumina bridges the gap between cutting-edge blockchain technology and everyday consumers, combining financial incentives, operational insights, and environmental impact to promote both user adoption and a greener economy on Stellar.
-
+In essence, Lumina bridges the gap between **cutting-edge blockchain technology and everyday consumers**, combining financial incentives, operational insights, environmental impact, and a sustainable revenue model for developers to promote user adoption and a greener economy on Stellar.
 
 ---
 
