@@ -4,16 +4,16 @@ Lumina is a **green cashback and loyalty program built on the Stellar network**,
 
 ---
 
-## Table of Contents
+## 📄 Table of Contents
 
-- [Team](#-team) 
-- [Problem](#-problem)  
-- [Solution](#-solution)  
-- [Why Stellar?](#-why-stellar)  
-- [How It Works](#-how-it-works)  
-- [Impact](#-impact)  
-- [Value Proposition](#-value-proposition)  
-- [Getting Started](#-getting-started)   
+- [Team](#team) 
+- [Problem](#problem)  
+- [Solution](#solution)  
+- [Why Stellar?](#why-stellar)  
+- [How It Works](#how-it-works)  
+- [Impact](#impact)  
+- [Value Proposition](#value-proposition)  
+- [Getting Started](#getting-started)   
 
 ---
 ## Team
