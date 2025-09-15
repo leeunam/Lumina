@@ -1,0 +1,21 @@
+# node
+node_modules
+dist
+.vite
+.eslintcache
+
+# env
+*.env.local
+!.env.example
+
+# editor
+.vscode
+.idea
+
+# rust/target
+target
+**/*.wasm
+
+# lockfiles (monorepo usa pnpm-lock na raiz)
+packages/**/package-lock.json
+packages/**/yarn.lock
