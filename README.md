@@ -9,6 +9,7 @@ Lumina is a **green cashback and loyalty program built on the Stellar network**,
 - [Team](#team) 
 - [Problem](#problem)  
 - [Solution](#solution)  
+- [Target Audience](#target-audience) 
 - [Why Stellar?](#why-stellar)  
 - [How It Works](#how-it-works)  
 - [Impact](#impact)  
@@ -44,6 +45,41 @@ Lumina uses **smart contracts on Stellar** to deliver a **green cashback system*
 - Customers interact through a simple, user-friendly interface — no blockchain expertise required.  
 
 What makes Lumina unique is its focus on **usability and adoption**. Instead of requiring users to understand wallets, private keys, or technical details of blockchain, Lumina integrates seamlessly with a simple and familiar interface, where tokens are received and managed automatically. Businesses can configure transparent reward rules, while users experience blockchain benefits without needing technical expertise.  
+
+---
+## Target Audience
+
+Lumina is designed for **medium-sized B2C companies in sectors that are still underexplored by digital cashback programs**, such as:
+
+- Regional supermarkets
+
+- Pharmacy chains
+
+- Gyms and fitness centers
+
+- Affordable healthcare clinics
+
+- Cafeterias and coffee shops
+
+These businesses typically face:
+
+- High customer turnover and strong local competition
+
+- Limited or ineffective loyalty programs, making them more receptive to innovative solutions
+
+- Products and services linked to health, recurring consumption, and environmental impact
+
+Why Lumina fits this niche:
+
+- Companies can adopt a digital, sustainable loyalty program with minimal barriers
+
+- Combines Web3 technology, cashback rewards, and carbon credits to differentiate them in the market
+
+- Provides transparent and automated reward systems, improving customer retention
+
+- Supports environmental responsibility, appealing to eco-conscious consumers
+
+In short, these businesses represent the ideal target audience for a digital, sustainable, and easy-to-use loyalty system that drives customer engagement and aligns with modern social and environmental values.
 
 ---
 
