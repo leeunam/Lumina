@@ -156,3 +156,12 @@ In essence, Lumina bridges the gap between **cutting-edge blockchain technology 
 1. Clone the repository:  
    ```bash
    git clone https://github.com/yourusername/lumina.git
+2. Rode
+   ```bash
+   chmod +x ootstrap_lumina.sh
+   ./ootstrap_lumina.sh
+   cd packages/web
+   pnpm dev
+3. Acesse
+   ```bash
+   http://localhost:5173
