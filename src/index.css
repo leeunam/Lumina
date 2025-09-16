@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --lumina-teal: #20b2aa;
+  --lumina-yellow: #ffd700;
+  --lumina-gray: #f5f5f5;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lumina-teal {
+  background-color: var(--lumina-teal);
+}
+
+.lumina-yellow {
+  background-color: var(--lumina-yellow);
+}

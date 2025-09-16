@@ -60,11 +60,19 @@ export async function recordExpense(req, res) {
       amount_brl,
     });
     // return tx_hash and explorer url
-    return ok(res, {
+    const payload = {
       expense_id: rec.expense_id || null,
       tx_hash: rec.hash || null,
       explorer_url: rec.explorer_url || null,
-    });
+    };
+    console.log('[recordExpense] ->', payload);
+    try {
+      require('fs').appendFileSync(
+        '/tmp/luar_api.log',
+        `[recordExpense] ${JSON.stringify(payload)}\n`
+      );
+    } catch (e) {}
+    return ok(res, payload);
   } catch (e) {
     return serverError(res, e);
   }
@@ -118,13 +126,21 @@ export async function reserve(req, res) {
       ),
     });
 
-    return ok(res, {
+    const reservePayload = {
       reservation_id: reservationId,
       points,
       cashback_brl: requiredFund,
       tx_hash: sent.hash,
       explorer_url: sent.explorer_url,
-    });
+    };
+    console.log('[reserve] ->', reservePayload);
+    try {
+      require('fs').appendFileSync(
+        '/tmp/luar_api.log',
+        `[reserve] ${JSON.stringify(reservePayload)}\n`
+      );
+    } catch (e) {}
+    return ok(res, reservePayload);
   } catch (e) {
     return serverError(res, e);
   }
@@ -165,11 +181,19 @@ export async function finalize(req, res) {
       fund_after = await financeiro_getFundBalance();
     } catch {}
 
-    return ok(res, {
+    const finalizePayload = {
       tx_hash: sent.hash,
       explorer_url: sent.explorer_url,
       fund_balance_after: fund_after,
-    });
+    };
+    console.log('[finalize] ->', finalizePayload);
+    try {
+      require('fs').appendFileSync(
+        '/tmp/luar_api.log',
+        `[finalize] ${JSON.stringify(finalizePayload)}\n`
+      );
+    } catch (e) {}
+    return ok(res, finalizePayload);
   } catch (e) {
     return serverError(res, e);
   }
@@ -177,3 +201,81 @@ export async function finalize(req, res) {
 
 export const debugReservations = async (_req, res) =>
   ok(res, { items: await listReservations() });
+
+export async function clientStatus(req, res) {
+  try {
+    const address = req.query.address;
+    if (!address) return badRequest(res, 'address é obrigatório');
+    // read balance via soroban service or loyalty contract (use mock if needed)
+    // For simplicity, return reservations related to this user and a mock points balance
+    const reservations = (await listReservations()).filter(
+      (r) => r.payload.customer === address
+    );
+    // attempt to read points via contrato loyalty if available
+    let points = 0;
+    try {
+      // optional: call soroban service read method (not implemented here)
+    } catch {}
+    const cashback = reservations.reduce(
+      (s, r) => s + (r.payload.cashback_brl || 0),
+      0
+    );
+    const carbon = reservations.reduce(
+      (s, r) => s + (r.payload.carbon_share_percent || 0),
+      0
+    );
+    const payload = {
+      points,
+      cashback,
+      carbon_kg: carbon,
+      last_tx: reservations[0]?.payload?.tx_hash ?? null,
+    };
+    console.log('[clientStatus] ->', { address, payload });
+    try {
+      require('fs').appendFileSync(
+        '/tmp/luar_api.log',
+        `[clientStatus] ${address} ${JSON.stringify(payload)}\n`
+      );
+    } catch (e) {}
+    return ok(res, payload);
+  } catch (e) {
+    return serverError(res, e);
+  }
+}
+
+export async function adminSummary(_req, res) {
+  try {
+    const items = await listReservations();
+    let total_expenses = items.reduce(
+      (s, r) => s + (r.payload.amount_brl || 0),
+      0
+    );
+    const points_emitted = items.reduce(
+      (s, r) => s + (r.payload.points || 0),
+      0
+    );
+    let fund_balance = null;
+    try {
+      fund_balance = await financeiro_getFundBalance();
+    } catch {}
+    const recent_txs = items
+      .slice(-10)
+      .map((r) => ({ hash: r.payload.tx_hash || null, type: 'reserve' }));
+    const payload = {
+      total_expenses,
+      points_emitted,
+      fund_balance,
+      recent_txs,
+    };
+    console.log('[adminSummary] ->', payload);
+    try {
+      require('fs').appendFileSync(
+        '/tmp/luar_api.log',
+        `[adminSummary] ${JSON.stringify(payload)}\n`
+      );
+    } catch (e) {}
+    return ok(res, payload);
+  } catch (e) {
+    return serverError(res, e);
+  }
+}
