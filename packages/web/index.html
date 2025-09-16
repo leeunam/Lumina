@@ -1,13 +1,210 @@
 <!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lumina – Vanilla + Soroban</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/app/main.js"></script>
-  </body>
-</html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lumina – Demo simples</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#F0EDEE] min-h-screen">
+  <div class="max-w-3xl mx-auto p-6 space-y-6">
+    <header>
+      <h1 class="text-2xl font-bold">Lumina – Demo (fluxo mínimo)</h1>
+      <p class="text-sm text-gray-600">Siga os passos na ordem. Campos obrigatórios marcados com *</p>
+    </header>
 
+    <!-- BASE URL -->
+    <section class="bg-white rounded-2xl p-4 shadow space-y-2">
+      <label class="block text-sm font-medium">BASE_URL do backend *</label>
+      <input id="baseUrl" class="mt-1 w-full border rounded px-3 py-2" value="http://localhost:3000/" placeholder="http://meu-backend:3000/" />
+      <p class="text-xs text-gray-500">Ex.: <code>http://localhost:3000/</code></p>
+    </section>
+
+    <!-- CONTEXTO GLOBAL -->
+    <section class="bg-white rounded-2xl p-4 shadow space-y-3">
+      <h2 class="font-semibold">0) Contexto (preencha uma vez)</h2>
+      <div class="grid md:grid-cols-3 gap-3">
+        <div>
+          <label class="text-sm">merchant_id *</label>
+          <input id="merchantId" class="w-full border rounded px-3 py-2" value="demo-merchant-001" placeholder="ex.: demo-merchant-001" />
+        </div>
+        <div>
+          <label class="text-sm">customer_pubkey (G...) *</label>
+          <input id="customerPub" class="w-full border rounded px-3 py-2" placeholder="G... do cliente" />
+        </div>
+        <div>
+          <label class="text-sm">amount_brl *</label>
+          <input id="amountBRL" type="number" step="0.01" class="w-full border rounded px-3 py-2" placeholder="ex.: 5.00" />
+        </div>
+      </div>
+      <label class="inline-flex items-center gap-2 text-sm"><input id="useCents" type="checkbox" class="rounded"> Enviar em centavos (5.00 → 500)</label>
+      <p class="text-xs text-gray-500">Esses valores serão usados em <code>/record_expense</code> e <code>/reserve</code>.</p>
+    </section>
+
+    <!-- PASSO 1: Friendbot -->
+    <section class="bg-white rounded-2xl p-4 shadow space-y-3">
+      <h2 class="font-semibold">1) (Opcional) Financiar conta de teste</h2>
+      <div class="grid md:grid-cols-3 gap-3">
+        <input id="fbAccount" class="border rounded px-3 py-2" placeholder="G... para receber XLM de teste" />
+        <button id="btnFriendbot" class="rounded-2xl px-4 py-2 border hover:shadow">Friendbot (/friendbot)</button>
+        <button id="btnHealth" class="rounded-2xl px-4 py-2 border hover:shadow">Health (/health)</button>
+      </div>
+      <p class="text-xs text-gray-500">Cole a mesma chave pública (G...) do cliente, se quiser testar funding.</p>
+    </section>
+
+    <!-- PASSO 2: Record Expense -->
+    <section class="bg-white rounded-2xl p-4 shadow space-y-2">
+      <h2 class="font-semibold">2) Registrar gasto (/record_expense)</h2>
+      <div class="flex gap-3 items-center">
+        <button id="btnRecord" class="rounded-2xl px-4 py-2 border hover:shadow">Enviar</button>
+        <div class="text-sm text-gray-600">Corpo: { merchant_id, customer_pubkey, amount_brl[, expense_id] }</div>
+      </div>
+      <div>
+        <label class="text-sm">expense_id (opcional)</label>
+        <input id="expenseId" class="w-full border rounded px-3 py-2" placeholder="se vazio, geramos automaticamente" />
+      </div>
+      <p class="text-xs text-gray-500">Se a API responder um <code>expense_id</code>, colocaremos aqui automaticamente.</p>
+    </section>
+
+    <!-- PASSO 3: Reserve -->
+    <section class="bg-white rounded-2xl p-4 shadow space-y-2">
+      <h2 class="font-semibold">3) Reservar resgate (/reserve)</h2>
+      <div class="flex gap-3 items-center">
+        <button id="btnReserve" class="rounded-2xl px-4 py-2 border hover:shadow">Reservar</button>
+        <div class="text-sm text-gray-600">Corpo: { expense_id, merchant_id, customer_pubkey, amount_brl }</div>
+      </div>
+      <p class="text-xs text-gray-500">Guardaremos automaticamente o identificador de reserva retornado como <code>reservation_id</code>.</p>
+    </section>
+
+    <!-- PASSO 4: Finalize -->
+    <section class="bg-white rounded-2xl p-4 shadow space-y-2">
+      <h2 class="font-semibold">4) Finalizar resgate (/finalize)</h2>
+      <div class="grid md:grid-cols-3 gap-3">
+        <input id="finalizeValue" class="border rounded px-3 py-2" placeholder="preenchido após a reserva" />
+        <button id="btnFinalize" class="rounded-2xl px-4 py-2 border hover:shadow">Finalizar</button>
+        <button id="btnDebug" class="rounded-2xl px-4 py-2 border hover:shadow">Listar reservas</button>
+      </div>
+      <p class="text-xs text-gray-500">Enviamos sempre <code>{ reservation_id: ... }</code> com o valor retornado por <code>/reserve</code>.</p>
+    </section>
+
+    <!-- LOGS -->
+    <section class="bg-white rounded-2xl p-4 shadow">
+      <h2 class="font-semibold mb-2">Logs</h2>
+      <pre id="log" class="text-sm whitespace-pre-wrap"></pre>
+    </section>
+  </div>
+
+  <script>
+    // ===== Utilidades =====
+    const $ = (id) => document.getElementById(id);
+    const log = (obj) => {
+      const el = $('log');
+      const time = new Date().toLocaleTimeString();
+      el.textContent = `[${time}] ` + (typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2)) + "\n\n" + el.textContent;
+    };
+    const val = (v, msg) => { if (v === undefined || v === null || v === '') { alert(msg); throw new Error(msg); } return v; };
+    const genExpenseId = () => 'exp_' + Math.random().toString(36).slice(2) + Date.now();
+    const joinUrl = (base, path) => String(base||'').replace(/\/+$/, '') + (String(path||'').startsWith('/') ? path : '/' + path);
+
+    let lastReservationId = null; // sempre no formato reservation_id
+
+    function normalizeAmount(raw, cents) {
+      const num = Number(raw);
+      if (!Number.isFinite(num)) return null;
+      return cents ? Math.round(num * 100) : Number(num.toFixed(2));
+    }
+
+    async function call(method, path, body) {
+      const base = $('baseUrl').value?.trim();
+      if (!base) { alert('Informe a BASE_URL'); return; }
+      const url = joinUrl(base, path);
+      const headers = { 'Content-Type': 'application/json' };
+
+      const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+      const text = await res.text();
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch (e) { data = { raw: text }; }
+      if (!res.ok) throw { status: res.status, data };
+      return data;
+    }
+
+    // ===== Passo 1: Friendbot & Health =====
+    $('btnFriendbot').onclick = async () => {
+      try {
+        const account = val($('fbAccount').value.trim(), 'Informe a conta (G...)');
+        const body = { account };
+        log({ POST: '/friendbot', ...body });
+        const data = await call('POST', '/friendbot', body);
+        log(data);
+      } catch (e) { log(e); }
+    };
+    $('btnHealth').onclick = async () => {
+      try { log('GET /health'); log(await call('GET','/health')); } catch (e) { log(e); }
+    };
+
+    // ===== Passo 2: Record Expense =====
+    $('btnRecord').onclick = async () => {
+      try {
+        const merchant_id     = val($('merchantId').value.trim(),  'Preencha merchant_id.');
+        const customer_pubkey = val($('customerPub').value.trim(), 'Preencha customer_pubkey (G...).');
+        const amount_raw      = val($('amountBRL').value,          'Preencha amount_brl.');
+        const amount_brl      = normalizeAmount(amount_raw, $('useCents').checked);
+        if (amount_brl === null) return alert('amount_brl inválido.');
+
+        const expManual = $('expenseId').value.trim();
+        const body = { merchant_id, customer_pubkey, amount_brl };
+        if (expManual) body.expense_id = expManual;
+
+        log({ POST: '/record_expense', body });
+        const data = await call('POST', '/record_expense', body);
+        log(data);
+        if (data.expense_id && !expManual) $('expenseId').value = data.expense_id;
+      } catch (e) { log(e); }
+    };
+
+    // ===== Passo 3: Reserve =====
+    $('btnReserve').onclick = async () => {
+      try {
+        const merchant_id     = val($('merchantId').value.trim(),  'Preencha merchant_id.');
+        const customer_pubkey = val($('customerPub').value.trim(), 'Preencha customer_pubkey (G...).');
+        const amount_raw      = val($('amountBRL').value,          'Preencha amount_brl.');
+        const amount_brl      = normalizeAmount(amount_raw, $('useCents').checked);
+        if (amount_brl === null) return alert('amount_brl inválido.');
+
+        let expense_id = $('expenseId').value.trim();
+        if (!expense_id) { expense_id = genExpenseId(); $('expenseId').value = expense_id; }
+
+        const body = { expense_id, merchant_id, customer_pubkey, amount_brl };
+        log({ POST: '/reserve', body });
+        const data = await call('POST', '/reserve', body);
+        log(data);
+
+        // Normaliza para reservation_id
+        if (data.reservation_id)      lastReservationId = data.reservation_id;
+        else if (data.reservationId)  lastReservationId = data.reservationId;
+        else if (data.id)             lastReservationId = data.id;
+        else if (data.code)           lastReservationId = data.code; // caso a API use 'code'
+        else                          lastReservationId = null;
+
+        if (lastReservationId) $('finalizeValue').value = lastReservationId;
+      } catch (e) { log(e); }
+    };
+
+    // ===== Passo 4: Finalize =====
+    $('btnFinalize').onclick = async () => {
+      try {
+        const value = val($('finalizeValue').value.trim(), 'Informe o identificador retornado pela reserva.');
+        const body  = { reservation_id: value }; // sempre snake_case para o backend
+        log({ POST: '/finalize', body });
+        const data = await call('POST', '/finalize', body);
+        log(data);
+      } catch (e) { log(e); }
+    };
+
+    // ===== Debug =====
+    $('btnDebug').onclick = async () => {
+      try { log('GET /_debug/reservations'); log(await call('GET','/_debug/reservations')); } catch (e) { log(e); }
+    };
+  </script>
+</body>
+</html>
