@@ -1,0 +1,6 @@
+export const ok = (res, data) => res.json({ ok: true, ...data })
+export const badRequest = (res, msg, extra={}) => res.status(400).json({ error: msg, ...extra })
+export const paymentRequired = (res, msg="sem saldo", extra={}) => res.status(402).json({ error: msg, ...extra })
+export const conflict = (res, msg, extra={}) => res.status(409).json({ error: msg, ...extra })
+export const serverError = (res, e) => res.status(500).json({ error: String(e?.message || e) })
+export const notFound = (res, msg="não encontrado") => res.status(404).json({ error: msg })
